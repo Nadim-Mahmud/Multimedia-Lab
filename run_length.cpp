@@ -3,7 +3,7 @@
 using namespace std;
 
 char str[1000000];
-string en = "", decr = "";
+string en = "", en1 = "", decr = "";
 
 string to_string(int cn){
     string tmp = "";
@@ -15,16 +15,18 @@ string to_string(int cn){
     return tmp;
 }
 
+
 int main(){
 
     int cn = 0, i, j;
 
-    ifstream run_in;
-    ofstream run_out,re_dec;
+    ifstream run_in, encoded_in;
+    ofstream decoded,encoded;
 
     run_in.open("run_in.txt");
-    run_out.open("run_out.txt");
-    re_dec.open("re_dec.txt");
+    encoded.open("run_encoded.txt");
+    decoded.open("run_decoded.txt");
+
 
     run_in>>str;
 
@@ -35,32 +37,36 @@ int main(){
         }
         i = j - 1;
         en += str[i];
-        //cout<<to_string(cn)<<endl;
-        en += to_string(cn);
+        en += '(' + to_string(cn) + ')';
     }
 
-    run_out<<"Encrypted text : "<<en<<endl;
+    encoded<<en<<endl;
+
+    //cout<<en<<endl;
+
 
     // decryption section
 
-    for(i = 0; en[i]; i++){
-        if(!isdigit(en[i])){
+    encoded_in.open("run_encoded.txt");
+    encoded_in>>en1;
 
+    for(i = 0; en1[i]; i++){
+        if(en1[i] == '('){
             int cnt = 0;
-            for(j = i+1; en[j] && isdigit(en[j]); j++){
-                cnt = cnt*10 + (int)(en[j] - '0');
+            for(j = i+1; en1[j] && en1[j] != ')'; j++){
+                cnt = cnt*10 + (int)(en1[j] - '0');
             }
             for(j = 0; j < cnt; j++){
-                decr += en[i];
+                decr += en1[i-1];
             }
         }
     }
-
-    re_dec<<"After decryption : "<<decr<<endl;
+    //cout<<decr<<endl;
+    decoded<<decr<<endl;
 
     run_in.close();
-    run_out.close();
-    re_dec.close();
+    encoded.close();
+    decoded.close();
 
     return 0;
 }
