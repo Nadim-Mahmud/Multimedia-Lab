@@ -34,6 +34,12 @@ double arithmetic_coding(string str){
     }
     double tag = (point + (point - tmp_range))/2.0;
 
+
+    encode<<in<<endl;
+    for(i = 0; i < in; i++){
+        encode<<(int)ch[i]<< " "<<probability[i]<<endl;
+    }
+
     cout<<"\nEncrypted data : ";
     cout<<tag<<endl;
     encode<<tag<<endl;
@@ -45,7 +51,7 @@ double arithmetic_coding(string str){
 
 string arithmetic_decoding(){
 
-    int i,j,k;
+    int i,j,k,x;
     double tag;
 
     ifstream encoded;
@@ -53,6 +59,12 @@ string arithmetic_decoding(){
 
     encoded.open("arithmetic_encoded.txt");
     decoded.open("arithmetic_decoded.txt");
+
+    encoded>>in;
+    for(i = 0; i < in ; i++){
+        encoded>>x>>probability[i];
+        ch[i] = (char)x;
+    }
 
     encoded>>tag;
 
