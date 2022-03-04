@@ -1,52 +1,57 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-void lzw_encoding(string str){
+void lzw_encoding(){
 
-    int i,j,n,a,id = 0;
+    int i,j,n,m,a,id = 0;
 
-    map<string , int>mp;
     vector<int>enc;
-    string tmp;
+    string tmp,str;
+    map<string , int> mp;
+    char ch;
 
     ofstream enc_out;
-    enc_out.open("lzw_enc.txt");
+    enc_out.open("lzw_encoded.txt");
 
-    cout<<"Initial String : "<<str<<endl;
+    ifstream input;
+    input.open("lzw_in.txt");
+    getline(input, str);
 
-    /// initial dictionary
-    for(i = 0; i < str.size(); i++){
+    input>>n;
+
+    for(i = 0; i < n; i++){
+        input>>ch>>m;
+        enc_out<<(int)ch<<" "<<m<<endl;
+        cout<<ch<<" "<<m<<endl;
         tmp = "";
-        tmp += str[i];
-        if(!mp[tmp]){
-            mp[tmp] = ++id;
-            enc_out<<(int)str[i]<<" "<<mp[tmp]<<endl;
-        }
+        tmp += ch;
+        mp[tmp] = m;
+        id = max(id, m);
     }
-
     enc_out<<-1<<" "<<-1<<endl;
 
     tmp = "";
     for(i = 0; i < str.size(); i++){
+
+        a = mp[tmp];
         tmp += str[i];
-        if(mp[tmp]){
-            a = mp[tmp];
-        }
-        else{
-            cout<<a<<" "<<tmp<<endl;
-            enc.push_back(a);
+
+        if(!mp[tmp]){
+            // entry to the dictionary
             mp[tmp] = ++id;
+            // storing prev match entry as output
+            enc.push_back(a);
+            // initializing string for next
             tmp = "";
             tmp += str[i];
-            a = mp[tmp];
         }
     }
+    a = mp[tmp];
     enc.push_back(a);
 
     enc_out<<enc.size()<<endl;
     cout<<"Encoding : ";
     for(i = 0; i < enc.size(); i++){
-
         if(i+1 ==  enc.size()){
             cout<<enc[i]<<endl;
             enc_out<<enc[i]<<endl;
@@ -57,6 +62,9 @@ void lzw_encoding(string str){
         }
     }
     //enc_out<<endl;
+
+    input.close();
+    enc_out.close();
 }
 
 string lzw_deconding(){
@@ -68,7 +76,10 @@ string lzw_deconding(){
     char ch;
 
     ifstream enc_in;
-    enc_in.open("lzw_enc.txt");
+    enc_in.open("lzw_encoded.txt");
+
+    ofstream output;
+    output.open("lzw_decoded.txt");
 
     for(i = 0; ; i++){
         enc_in>>k>>n;
@@ -100,16 +111,24 @@ string lzw_deconding(){
     }
 
     cout<<"Decoded String : "<<decd<<endl;
+    output<<decd<<endl;
+
+    output.close();
+    enc_in.close();
 
     return decd;
 }
 
 
 int main(){
-    int i,j,n;
-    string str = "ababbab , ~ cababba";
+    int i,j,n,m;
+    char ch;
+    string str, tmp;
 
-    lzw_encoding(str);
+    ofstream output;
+
+    lzw_encoding();
+
     lzw_deconding();
 
     return 0;
