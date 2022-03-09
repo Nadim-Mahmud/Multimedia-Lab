@@ -4,17 +4,17 @@ using namespace std;
 
 char str[1000000];
 string en = "", en1 = "", decr = "";
-
+/*
 string to_string(int cn){
     string tmp = "";
     while(cn){
-        tmp += (char)(cn%10 + 48);
+        tmp += (char)(cn%10 + '0');
         cn /= 10;
     }
     reverse(tmp.begin(), tmp.end());
     return tmp;
 }
-
+*/
 
 int main(){
 
@@ -27,7 +27,9 @@ int main(){
     encoded.open("run_encoded.txt");
     decoded.open("run_decoded.txt");
 
+    //while(run_in.eof()){
 
+    //}
     run_in>>str;
 
     for(i = 0; str[i]; i++){
@@ -42,7 +44,7 @@ int main(){
 
     encoded<<en<<endl;
 
-    //cout<<en<<endl;
+    cout<<en<<endl;
 
 
     // decryption section

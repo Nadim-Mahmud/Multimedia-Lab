@@ -120,6 +120,7 @@ int main(){
         if(mark[i]){
             ch[in] = (char)i;
             probability[in] = (float)mark[i]/(float)str.size();
+            cout<<ch[in]<<" "<<probability[in]<<endl;
             in++;
         }
     }

@@ -27,7 +27,6 @@ int id = 0;
 vector<int>code[150],vc;
 
 
-
 void dfs(int id){
 
     if(nlist[id].left==-1){
@@ -37,8 +36,8 @@ void dfs(int id){
 
     vc.push_back(0);
     dfs(nlist[id].left);
-
     vc.pop_back();
+
     vc.push_back(1);
     dfs(nlist[id].right);
     vc.pop_back();
@@ -70,8 +69,8 @@ string huffman_coding(string str){
     for(int i = 0; i < 130; i++){
         if(freq[i]){
             distinct_char++;
-            pq.push(node(id,-1, -1, freq[i], (char)i));
             nlist[id] = node(id, -1, -1, freq[i], (char)i);
+            pq.push(nlist[id]);
             id++;
         }
     }
@@ -79,12 +78,10 @@ string huffman_coding(string str){
     // creating the tree;
     node lt, rt;
     while(pq.size() > 1){
-        //cout<<pq.top().ch<<" "<<pq.top().cost<<endl;
-        rt = pq.top();
-        pq.pop();
         lt = pq.top();
         pq.pop();
-
+        rt = pq.top();
+        pq.pop();
         nlist[id] = node(id, lt.id, rt.id, lt.cost + rt.cost, '0');
         pq.push(nlist[id]);
 
@@ -94,6 +91,8 @@ string huffman_coding(string str){
     root = id++;
     nlist[root] = pq.top();
     pq.pop();
+
+    //cout<<nlist[nlist[root].left].ch<<endl;
 
     // generating code form the tree
 
@@ -133,8 +132,8 @@ string huffman_decoding(){
 
     int i, j, k, n;
     int ch;
-    string str,tmp,decd = "";
 
+    string str,tmp,decd = "";
     map<string, int>mp;
 
     ifstream enc_in;
@@ -169,7 +168,7 @@ int main(){
 
     //getline(cin, str);
 
-    str = "My name is Nadim Mahmud ? //";
+    str = "Hello";
 
     enc = huffman_coding(str);
     decd = huffman_decoding();
